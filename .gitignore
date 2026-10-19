@@ -1,0 +1,14 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporales y registros
+*.log
+*.tmp
+~$*
+
+# Paquetes e imágenes grandes (no se suben al repositorio)
+*.pkg
+*.dmg
+*.iso

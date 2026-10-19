@@ -1,0 +1,127 @@
+==========================================================
+ RESULTADO DEL DIAGNOSTICO - macOS SONOMA
+ Fecha: 19/10/2026
+ Informe leido: DIAGNOSTICO-SONOMA-2.txt (el mas reciente)
+ Registro de ajustes: AJUSTES-SONOMA-20261019-154103.txt
+==========================================================
+
+1. ESPACIO EN EL DISCO (dato exacto)
+----------------------------------------------------------
+Disco de macOS: ST500LT012-1DG142
+Capacidad total: 499,9 GB (465,6 GiB)
+Contenedor APFS: 499,9 GB
+Usado por macOS: 33,8 GB (6,8%)
+Libre: 466,1 GB (93,2%)
+
+Desglose por volumen APFS:
+  Sistema (System)     12,0 GB
+  Datos (Data)         15,0 GB
+  Preboot               5,4 GB
+  Recovery              1,2 GB
+  VM                    1,1 MB
+  ----------------------------
+  TOTAL                33,8 GB
+
+Dentro del volumen de Datos (lo que mas ocupa):
+  private               8,8 GB  (casi todo sleepimage de 8,0 GB)
+  Library               4,0 GB  (KDKs 2,5 GB; Dortania 0,8 GB;
+                                 Updates 0,4 GB; Caches 0,2 GB)
+  System                0,8 GB
+  Users                 0,3 GB  (Desktop, Documents, Downloads y
+                                 Movies vacios; Pictures 3,6 MB)
+  Previous Content      0,3 GB
+  Spotlight             15 MB
+
+CONCLUSION:
+- La instalacion esta muy limpia: solo 33,8 GB usados.
+- No hace falta limpiar nada para ganar espacio: hay 466 GB libres.
+- Lo unico que se podria liberar algun dia:
+    * sleepimage de 8 GB (no se usa con hibernatemode 0; macOS lo
+      vuelve a crear si algun dia lo necesita).
+    * KDKs de 2,5 GB (los usa OCLP para parchear; mejor dejarlos).
+- Los snapshots que aparecen son 2 snapshots de sistema necesarios
+  para el arranque. No son de Time Machine. NO borrar.
+
+Comandos opcionales (solo si quieres):
+  - Evitar que Spotlight indexe el pendrive:
+      sudo mdutil -i off /Volumes/OCSONOMA
+  - Liberar 8 GB del sleepimage (no urgente):
+      sudo rm -f /private/var/vm/sleepimage
+  - Encender automaticamente tras un corte de luz:
+      sudo pmset -a autorestart 1
+
+2. ESTADO DEL SISTEMA
+----------------------------------------------------------
+- macOS 14.8.9 (23J631), Darwin 23.6.0, iMac13,2.
+- 16 GB de RAM. Swap usado: 0 MB. No hay presion de memoria.
+- GPU: AMD Radeon RX 580, 8 GB VRAM, Metal 2, 1360x768 a 60 Hz.
+  Aceleracion funcionando correctamente.
+- Ethernet Realtek RTL8111 a 1 Gb/s, IP 192.168.1.100.
+- Audio VoodooHDA: salida, microfono y SPDIF funcionando.
+- SMART del HDD y de todos los discos: Verified.
+- FileVault: desactivado.
+- SIP: configuracion personalizada de OCLP (normal).
+- boot-args: agdpmod=vit9696 -wegnoigpu -amfipassbeta
+  ipc_control_port_options=0 (correcto, fase 2).
+- Kexts cargados correctamente: Lilu 1.7.2, WhateverGreen 1.7.1,
+  RestrictEvents 1.1.6, CryptexFixup 1.0.5, AMFIPass 1.4.1,
+  VirtualSMC 1.3.8, VoodooHDA 3.7.0, RealtekRTL8111 3.0.4.
+- OCLP 2.5.1 instalado. Root patch aplicado y funcionando
+  (por eso la RX 580 tiene Metal 2).
+- Bluetooth: el D-Link DBT-122 esta detectado en USB, pero sigue
+  sin funcionar. Queda aplazado, como acordamos.
+- Errores inofensivos en el registro: IOTimeSyncFamily y
+  AppleIPAppender no cargan. No afectan al uso normal.
+
+3. ACTUALIZACIONES
+----------------------------------------------------------
+- Actualizaciones automaticas: DESACTIVADAS correctamente
+  (sistema y usuario). Verificado en el registro de ajustes.
+- Actualizaciones pendientes que ve macOS:
+    * Safari 26.6.1
+    * Safari 18.6
+    * macOS Tahoe 26.7.1
+- IMPORTANTE: NO instalar macOS Tahoe 26.7.1. No es compatible con
+  este equipo/OCLP (Ivy Bridge, pre-Haswell).
+- Las de Safari se pueden evaluar otro dia; con las automaticas
+  apagadas no se instalara nada solo.
+- Regla: no instalar actualizaciones de macOS sin consultar.
+
+4. ENERGIA
+----------------------------------------------------------
+- Suspension del disco duro: OFF (ya aplicado). Bien.
+- Sistema: sleep 10 min, displaysleep 10 min, powernap 0,
+  standby 0, hibernatemode 0, autorestart 0.
+- Si el PC duerme y despierta bien, se puede dejar asi.
+- Si al despertar da fallos, se puede desactivar el sueno.
+- El "sleepimage" de 8 GB existe aunque hibernatemode sea 0; no es
+  urgente borrarlo, pero se puede liberar ese espacio.
+
+5. SNAPSHOTS Y TIME MACHINE
+----------------------------------------------------------
+- Time Machine: sin destinos configurados.
+- No hay snapshots locales de Time Machine.
+- Hay 2 snapshots de sistema APFS (os.update y bless) necesarios
+  para arrancar. NO borrar.
+
+6. RECOMENDACIONES
+----------------------------------------------------------
+1) No hay ninguna accion urgente. El sistema esta sano.
+2) Mantener las actualizaciones automaticas OFF.
+3) No instalar macOS Tahoe 26.7.1.
+4) No pulsar "Build and Install OpenCore" en OCLP.
+5) No activar FileVault ni instalar limpiadores/antivirus.
+6) Mantener al menos 15-20% de disco libre (ahora sobra mucho).
+7) Dejar los KDKs de OCLP (2,5 GB) por si hay que reparchear.
+8) Opcional: desactivar Spotlight en el pendrive OCSONOMA.
+9) Opcional: liberar el sleepimage de 8 GB (no es necesario).
+10) Backups: guardar el pendrive OCSONOMA, copia del EFI y copiar
+    archivos importantes a un disco externo o a la nube.
+11) La mejora real de rendimiento sigue siendo un SSD SATA 2,5"
+    para sustituir el HDD. No es urgente; el sistema funciona.
+12) El Bluetooth sigue aplazado; si algun dia quieres retomarlo,
+    el D-Link DBT-122 esta detectado en USB.
+
+==========================================================
+ Resumen preparado por el asistente - 19/10/2026
+==========================================================

@@ -1,0 +1,189 @@
+﻿================================================================
+ GUIA - INSTALAR macOS SONOMA 14.8.9 EN ESTE PC
+ (Intel i7-3770 + Radeon RX 580, con aceleracion completa)
+================================================================
+
+IMPORTANTE (leer antes de empezar)
+- NO se toca Windows ni los discos C:, D:, E:, S:.
+- Solo se borra el disco que usabas como F: (ST500LT012, ~465 GB).
+- Necesitaras: teclado USB, raton USB, cable de red (Ethernet) al
+  router y el pendrive de ~8 GB (se borrara por completo).
+- Tiempo total: entre 1,5 y 2,5 horas (la instalacion reinicia varias veces).
+- No hace falta Apple ID.
+
+--------------------------------------------------------------
+PASO 0 - PREPARAR EL PENDRIVE (en Windows)
+--------------------------------------------------------------
+1. Conecta el pendrive de ~8 GB.
+2. En el Escritorio, abre la carpeta "Instalar-Sonoma-PC".
+3. Doble clic en "PREPARAR-USB-SONOMA.cmd".
+4. Cuando Windows pida permiso de administrador, di Si.
+5. Sigue las instrucciones en pantalla: elegiras tu pendrive, se
+   formateara con la etiqueta OCSONOMA y se copiaran todos los archivos.
+6. Cuando diga "PENDRIVE LISTO", pulsa una tecla. Ya esta.
+
+--------------------------------------------------------------
+PASO 1 - ARRANCAR DESDE EL PENDRIVE
+--------------------------------------------------------------
+1. Apaga el PC. Conecta el pendrive, teclado y raton USB.
+2. Enciende el PC y pulsa F11 repetidamente (menu de arranque de MSI).
+3. Elige la entrada que empiece por "UEFI:" y corresponda al pendrive
+   (OCSONOMA o el nombre de tu pendrive). NO elijas "Windows Boot Manager".
+4. Aparece el menu de OpenCore (texto blanco). Elige:
+      "macOS Base System"  (es el instalador; a veces se llama
+                            "Mac OS X Base System o Install macOS Sonoma")
+   No toques "Windows" ni "Reset NVRAM".
+
+CONSEJO: para que los reinicios de la instalacion no se detengan,
+entra al BIOS (tecla Supr varias veces al encender), pestana Boot, y
+pon el pendrive UEFI como primera opcion de arranque. Asi cada reinicio
+vuelve solo al menu de OpenCore y tu solo eliges la entrada.
+
+--------------------------------------------------------------
+PASO 2 - FORMATEAR EL DISCO F: (desde macOS)
+--------------------------------------------------------------
+1. Tras unos minutos aparecera la Utilidad de Discos (o el menu de
+   recuperacion: elige Utilidad de Discos).
+2. Arriba: menu "Ver" -> "Mostrar todos los dispositivos".
+3. En la lista de la izquierda busca el disco interno:
+      "ST500LT012..." de ~465 GB (es el que era F:, antes llamado DATOS2)
+   NO selecciones el pendrive, ni el SSD de Windows.
+   Truco: selecciona el candidato y mira los datos del panel derecho
+   (capacidad ~465 GB y conexion SATA).
+4. Boton "Borrar" (Erase):
+      - Nombre:  Macintosh HD
+      - Formato: APFS
+      - Esquema: Mapa de particiones GUID
+5. Pulsa "Borrar" y espera. Cuando termine, cierra Utilidad de Discos.
+
+--------------------------------------------------------------
+PASO 3 - INSTALAR macOS SONOMA
+--------------------------------------------------------------
+1. En la ventana de recuperacion elige "Reinstalar macOS Sonoma".
+2. Acepta los terminos -> elige el disco "Macintosh HD" -> Continuar.
+3. La instalacion tarda 30-60 min y reinicia VARIAS veces.
+   En cada reinicio:
+   - Si no pusiste el pendrive como 1a opcion de arranque: pulsa F11
+     y elige otra vez la entrada UEFI del pendrive.
+   - En el menu de OpenCore elige la entrada que corresponda al paso:
+       * "macOS Installer" cuando aparezca (continua la instalacion)
+       * o "macOS Base System" del pendrive (si no aparece otra)
+     NO elijas "Windows".
+   - Veras mucho texto blanco en pantalla: es normal.
+4. Cuando termine, arranca el asistente "Configurar tu Mac":
+
+   - Pais/idioma: elige los tuyos. Teclado: elige el tuyo (USB).
+   - "Datos y privacidad": Continuar.
+   - "Como quieres configurar este Mac?": ninguna opcion (no transferir).
+   - Apple ID: elige "Configurar mas tarde" / omitir. NO pongas Apple ID.
+   - Terminos y condiciones: acepta.
+   - Usuario: pon el nombre que quieras y una CONTRASENA QUE RECUERDES
+     (la necesitaras para instalar el arranque mas adelante).
+   - NO actives "FileVault" / cifrado de disco (si lo ofrece).
+   - Siri y preguntas: rechaza o "Ahora no".
+   El primer arranque puede tardar un poco mas de lo normal.
+
+   (Los graficos AUN NO estan acelerados en este momento: es normal.)
+
+--------------------------------------------------------------
+PASO 4 - APLICAR LA ACELERACION GRAFICA (OpenCore Legacy Patcher)
+--------------------------------------------------------------
+1. Conecta el cable de red (Ethernet) al router.
+   Comprueba en Ajustes del Sistema -> Red que la Ethernet esta conectada.
+2. Abre el pendrive OCSONOMA y ejecuta "OpenCore-Patcher.pkg".
+   - Si macOS dice que es de un desarrollador no identificado:
+     clic DERECHO sobre el archivo -> "Abrir" -> "Abrir" otra vez.
+   - Instala (Continuar -> Instalar -> contrasena).
+3. Abre la app "OpenCore-Patcher" (esta en Aplicaciones).
+   - Si pregunta por actualizaciones de la app: cancela (no actualizar).
+4. Pulsa "Post-Install Root Patch" y sigue el asistente:
+   - Si pide descargar el "Kernel Debug Kit (KDK)": acepta (necesita
+     internet; son 1-2 GB; tarda unos minutos).
+   - Espera a que diga que los parches se aplicaron y pulsa "Reboot".
+   IMPORTANTE: NO pulses "Build and Install OpenCore" (no hace falta).
+5. El PC se reiniciara (pulsa F11 -> UEFI OCSONOMA si hace falta).
+
+--------------------------------------------------------------
+PASO 5 - ACTIVAR LA ACELERACION (cambiar a configuracion FASE 2)
+--------------------------------------------------------------
+1. Abre el pendrive OCSONOMA.
+2. Doble clic en "CAMBIAR-A-FASE2.command".
+   - Si no se abre con doble clic: clic derecho -> Abrir -> Abrir.
+   - O abre "Terminal" y pega esto y pulsa Enter:
+       bash /Volumes/OCSONOMA/CAMBIAR-A-FASE2.command
+3. Cuando diga "LISTO", reinicia el PC (menu Apple -> Reiniciar) y
+   arranca de nuevo desde el pendrive (F11 -> UEFI OCSONOMA).
+
+--------------------------------------------------------------
+PASO 6 - COMPROBAR QUE TODO FUNCIONA
+--------------------------------------------------------------
+- Menu Apple -> "Acerca de este Mac": debe aparecer la grafica:
+    "Radeon RX 580 ..." (o "AMD Radeon RX 580")
+  Si no aparece ahi: "Informe del sistema" -> "Graficos/Pantallas":
+  debe decir "Radeon RX 580" y "Metal: Compatible".
+- La interfaz debe ir fluida (Dock con transparencias, videos sin saltos).
+- Ajustes del Sistema -> Pantallas: resolucion 1360x768 (o la de tu TV).
+- Ajustes del Sistema -> Red: "Ethernet conectado".
+
+Si tras este paso NO hay aceleracion: avisa al asistente y usaremos
+la configuracion de respaldo (EXTRAS/config-fase2-amfi-off.plist).
+
+--------------------------------------------------------------
+PASO 7 - QUE EL PC ARRANQUE SIN EL PENDRIVE
+--------------------------------------------------------------
+1. Con macOS funcionando, abre otra vez el pendrive OCSONOMA.
+2. Doble clic en "COPIAR-EFI-INTERNO.command" (pedira tu contrasena
+   de macOS; al escribirla no se ve nada: es normal).
+3. Cuando diga LISTO, reinicia con el pendrive todavia puesto.
+4. Entra al BIOS (tecla Supr al encender) -> pestana "Boot": pon como
+   "Boot Option #1" la entrada UEFI del disco ST500LT012 (puede
+   aparecer como "UEFI: ST500LT012..." o "UEFI OS (...)"). Guarda
+   con F10 y reinicia.
+5. Comprueba que arranca el menu de OpenCore SIN el pendrive.
+   Ya puedes guardar el pendrive en un cajon: es tu kit de rescate.
+
+--------------------------------------------------------------
+NOTAS IMPORTANTES
+--------------------------------------------------------------
+- NO instales actualizaciones de macOS por ahora. Si macOS avisa de
+  una actualizacion, posponla/ignorala y avisa al asistente.
+- Windows sigue intacto en su disco: desde el menu de OpenCore
+  aparece una entrada "Windows" para arrancarlo.
+- No actives FileVault (cifrado de disco).
+- En el pendrive, la carpeta EXTRAS contiene configuraciones de
+  respaldo y un LEEME: solo se usan si algo va mal (con ayuda del
+  asistente).
+
+--------------------------------------------------------------
+PROBLEMAS COMUNES
+--------------------------------------------------------------
+- "Se queda en texto blanco mucho tiempo": espera (hasta 5-10 min en
+  el primer arranque tras cada fase). Es normal.
+- Tras aplicar el root patch, el primer arranque puede ser lento: espera.
+- Si el instalador dice que el Mac no es compatible: avisa al asistente
+  (usaremos EXTRAS/config-fase1-hv.plist).
+- Si el teclado no responde en el menu de OpenCore: reinicia y vuelve
+  a intentarlo; el teclado USB se detecta al arrancar.
+
+--------------------------------------------------------------
+NOVEDADES (19/10/2026)
+--------------------------------------------------------------
+1) ARRANQUE SIN PENDRIVE (sustituye al antiguo Paso 7):
+   - Reinicia en WINDOWS con el pendrive puesto.
+   - Abre la carpeta del Escritorio "Instalar-Sonoma-PC" y ejecuta
+     INSTALAR-ARRANQUE-INTERNO.cmd (pedira permisos de administrador).
+   - Cuando diga LISTO: reinicia, pulsa F11 y elige la entrada UEFI
+     del disco ST500LT012. Si aparece el menu de OpenCore, entra al
+     BIOS (Supr) y ponla como primera opcion de arranque.
+   - El antiguo COPIAR-EFI-INTERNO.command ya no es necesario.
+
+2) AUDIO DE LA PLACA (codec VIA): el EFI ahora incluye VoodooHDA 3.7.0,
+   el driver que SI soporta el codec VIA de esta placa (AppleALC no lo
+   soporta). El sonido sale por los conectores de la placa (verde
+   trasero / panel frontal). Si no suena, avisa al asistente.
+
+3) BLUETOOTH: el EFI ahora incluye los kexts Broadcom + BlueToolFixup
+   para el adaptador USB. Prueba a conectar tus auriculares.
+
+Estos cambios 2 y 3 actuan cuando el equipo arranca con este EFI
+(el del pendrive, o el que se copia al disco con el paso 1).

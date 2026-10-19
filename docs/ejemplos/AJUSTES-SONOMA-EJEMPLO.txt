@@ -1,0 +1,142 @@
+================================================================
+ AJUSTES APLICADOS - Mon Oct 19 15:41:03 PDT 2026
+================================================================
+
+--- ANTES: actualizaciones ---
+{
+    LastAttemptBuildVersion = "14.8.9 (23J631)";
+    LastAttemptSystemVersion = "14.8.9 (23J631)";
+    LastBackgroundSuccessfulDate = "2026-10-19 18:53:46 +0000";
+    LastFullSuccessfulDate = "2026-10-19 22:36:22 +0000";
+    LastRecommendedMajorOSBundleIdentifier = "";
+    LastRecommendedUpdatesAvailable = 3;
+    LastResultCode = 0;
+    LastSessionSuccessful = 1;
+    LastSuccessfulDate = "2026-10-19 22:36:44 +0000";
+    LastUpdatesAvailable = 3;
+    PrimaryLanguages =     (
+        "es-419",
+        "es-CO"
+    );
+    RecommendedUpdates =     (
+                {
+            "Display Name" = Safari;
+            "Display Version" = "26.6.1";
+            Identifier = "Safari26.6.1SonomaAuto";
+            "Product Key" = "140-79456";
+        },
+                {
+            "Display Name" = "macOS Tahoe 26.7.1";
+            "Display Version" = "26.7.1";
+            Identifier = "MSU_UPDATE_25G241_full_26.7.1_major";
+            MobileSoftwareUpdate = 1;
+            "Product Key" = "MSU_UPDATE_25G241_full_26.7.1_major";
+        },
+                {
+            "Display Name" = Safari;
+            "Display Version" = "18.6";
+            Identifier = "Safari18.6SonomaAuto";
+            "Product Key" = "093-01292";
+        }
+    );
+}
+
+--- ANTES: energia ---
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ autorestart          0
+ hibernatefile        /var/vm/sleepimage
+ powernap             0
+ disksleep            10
+ standbydelayhigh     86400
+ sleep                10
+ autopoweroffdelay    259200
+ hibernatemode        0
+ autopoweroff         1
+ ttyskeepawake        1
+ displaysleep         10
+ highstandbythreshold 50
+ standbydelaylow      86400
+
+
+--- DESPUES: actualizaciones (sistema) ---
+{
+    AutomaticCheckEnabled = 0;
+    AutomaticDownload = 0;
+    AutomaticallyInstallMacOSUpdates = 0;
+    ConfigDataInstall = 0;
+    CriticalUpdateInstall = 0;
+    LastAttemptBuildVersion = "14.8.9 (23J631)";
+    LastAttemptSystemVersion = "14.8.9 (23J631)";
+    LastBackgroundSuccessfulDate = "2026-10-19 18:53:46 +0000";
+    LastFullSuccessfulDate = "2026-10-19 22:36:22 +0000";
+    LastRecommendedMajorOSBundleIdentifier = "";
+    LastRecommendedUpdatesAvailable = 3;
+    LastResultCode = 0;
+    LastSessionSuccessful = 1;
+    LastSuccessfulDate = "2026-10-19 22:36:44 +0000";
+    LastUpdatesAvailable = 3;
+    PrimaryLanguages =     (
+        "es-419",
+        "es-CO"
+    );
+    RecommendedUpdates =     (
+                {
+            "Display Name" = Safari;
+            "Display Version" = "26.6.1";
+            Identifier = "Safari26.6.1SonomaAuto";
+            "Product Key" = "140-79456";
+        },
+                {
+            "Display Name" = "macOS Tahoe 26.7.1";
+            "Display Version" = "26.7.1";
+            Identifier = "MSU_UPDATE_25G241_full_26.7.1_major";
+            MobileSoftwareUpdate = 1;
+            "Product Key" = "MSU_UPDATE_25G241_full_26.7.1_major";
+        },
+                {
+            "Display Name" = Safari;
+            "Display Version" = "18.6";
+            Identifier = "Safari18.6SonomaAuto";
+            "Product Key" = "093-01292";
+        }
+    );
+}
+
+--- DESPUES: actualizaciones (usuario) ---
+{
+    AutomaticCheckEnabled = 0;
+    AutomaticDownload = 0;
+    AutomaticallyInstallMacOSUpdates = 0;
+    ConfigDataInstall = 0;
+    CriticalUpdateInstall = 0;
+}
+
+--- DESPUES: energia ---
+System-wide power settings:
+Currently in use:
+ standby              0
+ Sleep On Power Button 1
+ autorestart          0
+ hibernatefile        /var/vm/sleepimage
+ powernap             0
+ disksleep            0
+ standbydelayhigh     86400
+ sleep                10
+ autopoweroffdelay    259200
+ hibernatemode        0
+ autopoweroff         1
+ ttyskeepawake        1
+ displaysleep         10
+ highstandbythreshold 50
+ standbydelaylow      86400
+
+Para revertir las actualizaciones automaticas:
+  Ajustes del Sistema > General > Actualizacion de software >
+  Actualizaciones automaticas.
+
+Para volver a permitir la suspension del disco:
+  sudo pmset -a disksleep 10
+

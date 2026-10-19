@@ -1,0 +1,22 @@
+﻿EXTRAS - Configuraciones de respaldo (usar solo con ayuda del asistente)
+=======================================================================
+
+config-fase1-backup.plist
+   Copia exacta de la configuracion FASE 1 original (instalar + parchear).
+
+config-fase1-hv.plist
+   Variante de la FASE 1 con "spoof de maquina virtual" estatico.
+   Usar SOLO si el instalador de macOS se niega a instalar por
+   "modelo no compatible".
+
+config-fase2-amfi-off.plist
+   Variante de la FASE 2 (AMFI desactivado por argumento de arranque).
+   Usar SOLO si tras el root patch la grafica no queda acelerada con
+   la configuracion FASE 2 normal.
+
+COMO USAR UNA VARIANTE (desde Windows):
+  1. Manten una copia del config.plist actual.
+  2. Sustituye en el pendrive  EFI\OC\config.plist  por la variante
+     elegida, renombrandola a config.plist.
+
+Desde macOS: exactamente igual, arrastrando en el Finder.

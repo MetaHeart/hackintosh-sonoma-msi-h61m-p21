@@ -1,0 +1,376 @@
+================================================================
+ GUIA DE MANTENIMIENTO, AJUSTES Y RENDIMIENTO
+ macOS Sonoma - i7-3770 / 16 GB / RX 580 / HDD 500 GB
+================================================================
+
+Esta guía es para el estado actual: Sonoma ya instalado y funcionando
+con aceleración de la RX 580 mediante OpenCore Legacy Patcher (OCLP).
+NO se va a actualizar a Sequoia. NO se toca Windows ni C:/D:/E:/S:.
+
+----------------------------------------------------------------
+ 0. RESUMEN DEL EQUIPO
+----------------------------------------------------------------
+
+- CPU: Intel Core i7-3770 (4 núcleos / 8 hilos, 3,4 GHz)
+- RAM: 16 GB DDR3 1600 (2 x 8 GB). Es el máximo de la placa.
+- GPU: AMD Radeon RX 580, acelerada con OCLP.
+- Placa: MSI H61M-P21 (MS-7680), BIOS V19.2 (2013).
+- macOS: Sonoma en ST500LT012-1DG142, HDD de 465,76 GB, SATA.
+- Windows: SSD Crucial BX500 480 GB (C:), SSD Kingston 240 GB (S:)
+  y HDD HGST 1 TB (D:/E:).
+- Red: Ethernet. Sin Apple ID. FileVault desactivado.
+- Bluetooth: no funciona; queda aplazado.
+
+El HDD de macOS es un disco de 2,5" y 5400 RPM. Es el principal
+cuello de botella del equipo. Windows está en SSD, por eso Windows
+se siente mucho más rápido. La RAM ya está al máximo y la CPU/GPU
+son suficientes para la resolución 1360x768: no merece la pena
+cambiar RAM, CPU ni GPU. La mejora real es un SSD para macOS.
+
+----------------------------------------------------------------
+ 1. CUÁNTO ESPACIO OCUPA macOS
+----------------------------------------------------------------
+
+El disco de macOS es el ST500LT012 de 465,76 GB. La partición APFS
+ocupa 465,57 GB, es decir, todo el disco. Desde Windows no se puede
+leer el interior de APFS, así que la cifra exacta de espacio usado
+hay que obtenerla en macOS.
+
+Formas de verlo:
+
+1) Rápido, desde el escritorio de macOS:
+   - Menú Apple > Acerca de este Mac > Más información > Almacenamiento.
+   - O Ajustes del Sistema > General > Almacenamiento.
+
+2) Completo, con el script incluido:
+   - Ejecuta DIAGNOSTICO-SONOMA.command desde el pendrive OCSONOMA.
+   - El informe incluye: capacidad total, usado, libre, snapshots,
+     tamaño de Sistema, Datos, Aplicaciones, Usuarios, cachés y swap.
+   - Deja el informe en el pendrive para leerlo desde Windows.
+
+3) Comandos manuales en Terminal:
+   df -h /
+   df -h /System/Volumes/Data
+   diskutil apfs list
+   tmutil listlocalsnapshots /
+
+Interpretación:
+- El contenedor APFS es todo el disco; el espacio libre es común
+  para el sistema y los datos.
+- "Usado" incluye el sistema sellado, tus datos, aplicaciones,
+  cachés y snapshots de APFS.
+- Conviene mantener al menos un 15-20% libre (unos 70-90 GB en este
+  disco). Si baja de 40-50 GB, hay que limpiar.
+- Los snapshots pueden ocupar varios GB y no se ven como archivos
+  normales. Si hay snapshots antiguos y no usas Time Machine, se
+  pueden borrar uno a uno con:
+     sudo tmutil deletelocalsnapshots FECHA
+  No borres snapshots a ciegas.
+
+Qué NO hacer con el espacio:
+- No uses CleanMyMac, MacKeeper, "optimizadores" ni antivirus que
+  prometan limpiar el sistema. En un macOS con OCLP pueden romper
+  parches o el arranque.
+- No borres carpetas de /System ni /System/Volumes/Data a mano.
+- No borres la partición EFI ni la de recuperación.
+- No uses utilidades de "defragmentación": APFS no las necesita.
+
+----------------------------------------------------------------
+ 2. ACTUALIZACIONES: REGLAS
+----------------------------------------------------------------
+
+Regla de oro: NO instalar actualizaciones de macOS sin consultar.
+
+Por qué:
+- Este equipo es pre-Haswell y lleva parches de OCLP. Una
+  actualización normal o una "Respuesta de seguridad" (RSR) puede
+  dejar el sistema sin aceleración o sin arrancar.
+- Las actualizaciones completas obligan a volver a aplicar el
+  "Post-Install Root Patch" de OCLP y a tener el pendrive de rescate.
+- Sonoma ya está en la fase final de su ciclo: Apple irá dejando de
+  enviar parches de seguridad. Es el precio de quedarse en Sonoma;
+  la alternativa sería Sequoia, que has decidido no hacer. Es una
+  decisión válida, solo tenlo en cuenta.
+
+Qué hacer:
+- Desactiva las actualizaciones automáticas:
+  Ajustes del Sistema > General > Actualización de software >
+  botón de información (i) de "Actualizaciones automáticas" >
+  desactiva TODAS las opciones:
+    - Buscar actualizaciones
+    - Descargar nuevas actualizaciones cuando estén disponibles
+    - Instalar actualizaciones de macOS
+    - Instalar respuestas de seguridad y archivos del sistema
+- Si aparece una actualización, no la instales: apunta cuál es y
+  consúltame primero.
+- No instales Sequoia, Tahoe ni "parches" de foros.
+
+OCLP:
+- Mantén la versión actual (2.5.1) mientras todo funcione.
+- NO pulses "Build and Install OpenCore". Nuestro EFI es personalizado.
+- Si algún día actualizas la app OCLP, después hay que volver a aplicar
+  "Post-Install Root Patch". No lo hagas sin copia de seguridad del EFI
+  y sin el pendrive de rescate.
+- Kexts y OpenCore: si todo funciona, no los actualices. "Si no está
+  roto, no lo arregles". Guarda una copia del EFI que funciona.
+
+Aplicaciones y Windows:
+- Las apps normales (navegador, etc.) se pueden actualizar.
+- Alguna app puede pedir una versión más nueva de macOS. Si pasa,
+  avísame antes de cambiar nada.
+- Windows se actualiza por separado; no afecta a macOS.
+- BIOS: no lo actualices. La V19.2 es de 2013 y el riesgo no compensa.
+
+----------------------------------------------------------------
+ 3. CONFIGURACIÓN RECOMENDADA
+----------------------------------------------------------------
+
+Actualizaciones automáticas:
+- Desactivadas (ver sección 2).
+
+Energía:
+- Ajustes del Sistema > Energía.
+- Desactiva "Poner los discos duros en reposo cuando sea posible".
+  Así evitas esperas de 5-10 segundos al volver a usar el HDD.
+- Si el sueño funciona bien, puedes dejarlo. Si el PC no despierta,
+  se reinicia o da errores al volver, desactiva el sueño del sistema
+  y usa apagado normal.
+- En un sobremesa puede estar activado "Iniciar automáticamente
+  después de un fallo de corriente".
+- Si no usas "Power Nap" ni "Despertar por red", desactívalos.
+
+Elementos de inicio:
+- Ajustes del Sistema > General > Elementos de inicio de sesión.
+- Quita las apps que no necesites al arrancar.
+- Revisa también "Permitir en segundo plano" y desactiva lo que no uses.
+
+Spotlight:
+- Ajustes del Sistema > Siri y Spotlight > Privacidad de Spotlight.
+- Añade los discos de Windows (D:, E:, S:) y el pendrive para que
+  macOS no los indexe. Mantén indexado el disco de macOS.
+- Comprueba el estado con: mdutil -s /
+- Si acabas de instalar o actualizar, deja terminar la indexación;
+  en un HDD puede tardar y consumir CPU/disco.
+
+Accesibilidad y Dock (opcional, mejora menor):
+- Ajustes del Sistema > Accesibilidad > Pantalla:
+  "Reducir movimiento" y "Reducir transparencia".
+- Ajustes del Sistema > Escritorio y Dock:
+  "Minimizar ventanas usando: Escala" (más rápido que Genio).
+  Puedes desactivar "Animar la apertura de aplicaciones".
+
+Seguridad:
+- FileVault: OFF (ya está así). No lo actives.
+- Firewall: opcional. Si lo activas, permite Ethernet y las apps
+  que uses. No es necesario para el rendimiento.
+- Sin Apple ID, sin iCloud, sin "Buscar mi Mac".
+- No cambies el SMBIOS/serial (iMac13,2) ni el boot-args a mano.
+- No resetees la NVRAM desde OpenCore salvo que sea necesario.
+
+Time Machine / copias:
+- Si tienes un disco externo HFS+ o APFS, puedes configurar
+  Time Machine en Ajustes del Sistema > General > Time Machine.
+- NO uses D:, E: ni S: para Time Machine: son NTFS y no se deben
+  formatear. Time Machine no escribe en NTFS.
+- Si no tienes disco externo, copia los archivos importantes a un
+  USB o a la nube de vez en cuando.
+
+Compartir:
+- Ajustes del Sistema > General > Compartir: desactiva "Compartir
+  archivos", "Compartir pantalla", etc. si no los usas.
+
+Notificaciones y Siri:
+- Puedes desactivar Siri y las notificaciones que no uses; libera
+  algún proceso en segundo plano, aunque el efecto es pequeño.
+
+Inicio de sesión automático:
+- Opcional. Si lo activas, cualquiera con acceso físico entra sin
+  contraseña. No es necesario.
+
+----------------------------------------------------------------
+ 4. RENDIMIENTO EN HDD
+----------------------------------------------------------------
+
+Diagnóstico honesto:
+- El HDD es un ST500LT012 de 5400 RPM. La CPU y la GPU están bien;
+  la RAM está al máximo (16 GB); el disco es el límite.
+- Windows está en SSD y macOS en HDD. Es normal que macOS tarde
+  más en abrir apps, indexar, actualizar o arrancar.
+- No hay ningún ajuste milagroso que convierta un HDD en un SSD.
+  Los ajustes de abajo ayudan, pero la mejora grande es el SSD.
+
+Mejora definitiva (opcional):
+- Sustituir el HDD de macOS por un SSD SATA de 2,5" (480 GB o 1 TB).
+- La placa H61M-P21 es SATA II (~300 MB/s teóricos), pero la mejora
+  real está en el acceso aleatorio: el sistema se siente muchísimo
+  más rápido.
+- Se puede clonar el APFS actual al SSD o hacer una instalación
+  limpia y restaurar tus datos. También hay que copiar el EFI.
+- No se toca Windows: se sustituye solo el disco de macOS.
+- Si compras el SSD, te preparo el plan paso a paso.
+
+Mientras tanto:
+- Deja al menos 15-20% libre en el disco. APFS se degrada si está lleno.
+- Desactiva la suspensión del HDD (Energía).
+- Revisa elementos de inicio y apps en segundo plano.
+- Excluye los discos de Windows del Spotlight.
+- Usa Safari o Firefox si Chrome te va pesado; evita muchas pestañas
+  y extensiones a la vez.
+- No tengas 20 apps abiertas: el HDD sufre con lecturas simultáneas.
+- Comprueba el swap: sysctl vm.swapusage. Si hay mucho swap, cierra
+  apps; la RAM ya no se puede ampliar más.
+- Comprueba el estado SMART:
+  diskutil info / | grep -E 'SMART|Solid State'
+  Debe decir "SMART Status: Verified". Si no, avísame.
+- Limpia el polvo y revisa temperaturas cada 6-12 meses. Si el
+  i7-3770 hace throttling, renueva la pasta térmica.
+- No defragmentes APFS.
+- No uses "limpiadores de memoria": macOS gestiona la RAM sola.
+
+Sobre ampliar hardware:
+- RAM: 16 GB es el máximo de la H61M-P21. No hay ampliación.
+- CPU: el i7-3770 es de lo mejor que admite la H61; no compensa.
+- GPU: la RX 580 sobra para 1360x768; no compensa cambiarla.
+- SSD: sí, es la única mejora grande y recomendable.
+
+----------------------------------------------------------------
+ 5. MANTENIMIENTO PERIÓDICO
+----------------------------------------------------------------
+
+Cada 1-3 meses:
+
+[ ] Comprobar espacio libre (ideal > 15-20%).
+[ ] Comprobar SMART del HDD.
+[ ] Copiar archivos importantes a un USB/disco externo/nube.
+[ ] Revisar snapshots si el espacio baja.
+[ ] Revisar elementos de inicio y apps en segundo plano.
+[ ] Mirar si hay actualizaciones, pero NO instalar macOS sin consultar.
+[ ] No actualizar OCLP/kexts si todo funciona.
+[ ] Verificar que el pendrive OCSONOMA sigue guardado y con su EFI.
+[ ] Verificar la aceleración: Acerca de este Mac > Gráficos, o
+    system_profiler SPDisplaysDataType (debe aparecer la RX 580).
+[ ] Limpiar polvo cada 6-12 meses.
+
+Después de una actualización de macOS (si algún día se hace):
+- Volver a aplicar el "Post-Install Root Patch" de OCLP.
+- Arrancar con el pendrive de rescate si no arranca.
+- Verificar aceleración y Ethernet.
+- No hacerlo sin copia del EFI y sin haber hablado antes.
+
+Si algo falla:
+- No borres nada ni formatees.
+- Arranca con F11 > UEFI OCSONOMA > macOS Base System.
+- Utilidad de Discos > First Aid.
+- Si hace falta, se puede reinstalar Sonoma sobre el volumen sin
+  borrar los datos, pero consúltame antes.
+
+----------------------------------------------------------------
+ 6. BACKUPS Y RESCATE
+----------------------------------------------------------------
+
+Pendrive OCSONOMA:
+- No lo borres. Tiene la recuperación de Sonoma y el EFI de rescate.
+- Guárdalo en un sitio seguro y no lo uses para archivos normales.
+
+Copia del EFI:
+- Ya tienes una copia en el PC Windows:
+  C:\Users\PC\Documents\Monterey-USB\USB-sonoma
+- Si algún día cambias algo del EFI, actualiza también esa copia.
+- No borres la carpeta EFI del pendrive ni la del disco interno.
+
+Archivos importantes:
+- Copia documentos, fotos, etc. a un disco externo o a la nube.
+- Time Machine solo en un disco HFS+/APFS; no en NTFS.
+- Un backup no está terminado hasta que has comprobado que se puede
+  restaurar algo. De vez en cuando abre un archivo copiado.
+
+Si macOS no arranca:
+- Enciende con F11 > UEFI OCSONOMA > macOS Base System.
+- Utilidad de Discos > First Aid.
+- No borres el disco de macOS desde Windows.
+- Si el HDD hace ruidos raros o SMART falla, apágalo y no insistas:
+  puede ser el momento de pasar al SSD.
+
+Si el HDD muere:
+- El SSD de reemplazo es la solución, pero los datos solo se
+  recuperan si hay backup. Por eso importa la copia externa.
+
+----------------------------------------------------------------
+ 7. QUÉ NO HACER
+----------------------------------------------------------------
+
+- No instalar actualizaciones de macOS sin consultar.
+- No pulsar "Build and Install OpenCore" en OCLP.
+- No activar FileVault.
+- No usar CleanMyMac, MacKeeper, antivirus milagro ni "optimizadores".
+- No actualizar la BIOS.
+- No cambiar el SMBIOS/serial ni el boot-args a mano.
+- No resetear la NVRAM sin necesidad.
+- No formatear ni borrar discos sin identificar perfectamente.
+- No tocar C:, D:, E: ni S: desde macOS.
+- No instalar Sequoia/Tahoe ahora.
+- No usar discos NTFS para Time Machine.
+- No defragmentar APFS.
+- No borrar snapshots a ciegas.
+- No instalar kexts o configuraciones de foros sin comprobarlas.
+- No ejecutar comandos "sudo rm -rf" copiados de Internet.
+
+----------------------------------------------------------------
+ 8. COMANDOS ÚTILES (Terminal)
+----------------------------------------------------------------
+
+Espacio:
+  df -h /
+  df -h /System/Volumes/Data
+  diskutil apfs list
+  diskutil info / | grep -E 'Capacity|Free Space|SMART|Solid State'
+  tmutil listlocalsnapshots /
+
+Tamaños:
+  sudo du -s -m /Applications/* | sort -n
+  sudo du -s -m "$HOME"/* | sort -n
+  sudo du -sh "$HOME/Library/Caches"
+
+Estado:
+  system_profiler SPDisplaysDataType | grep -E 'Chipset|Metal|VRAM'
+  pmset -g
+  sysctl vm.swapusage
+  mdutil -s /
+  csrutil status
+  nvram boot-args
+  softwareupdate --history | tail -20
+
+Nota: los comandos con sudo piden contraseña. Los de solo lectura
+no cambian nada. El script DIAGNOSTICO-SONOMA.command ya recoge todo
+esto y lo guarda en el pendrive.
+
+----------------------------------------------------------------
+ 9. ESTADO ACTUAL
+----------------------------------------------------------------
+
+Funciona:
+- Arranque por OpenCore.
+- macOS Sonoma.
+- Aceleración de la RX 580 con OCLP.
+- Ethernet, audio, USB, teclado y ratón.
+- Windows en el menú de arranque.
+
+No funciona:
+- Bluetooth (aplazado; no se va a tocar por ahora).
+
+Configuración actual:
+- Sin Apple ID.
+- FileVault desactivado.
+- SIP/AMFI desactivados por OCLP.
+- No actualizar macOS sin consultar.
+
+Cualquier cambio grande (actualización, EFI, kexts, discos) se hace
+con copia de seguridad y con el pendrive de rescate a mano.
+
+================================================================
+ Archivos relacionados:
+ - DIAGNOSTICO-SONOMA.command
+ - APLICAR-AJUSTES-SONOMA.command (opcional)
+ - GUIA-INSTALACION-SONOMA.txt (instalación original)
+ - EFI/ (arranque)
+================================================================

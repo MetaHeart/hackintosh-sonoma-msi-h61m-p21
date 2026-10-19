@@ -1,0 +1,28 @@
+==========================================================
+ PASOS RAPIDOS - macOS Sonoma actual (sin Sequoia)
+==========================================================
+
+La idea: mantener Sonoma como esta y medir el espacio real
+que ocupa en el HDD. Desde Windows no se puede leer APFS.
+
+1. Conecta el pendrive OCSONOMA al PC Windows.
+2. Avisa al asistente para copiar estos archivos al pendrive
+   (o copialos tu desde esta carpeta a la raiz del pendrive).
+3. Arranca macOS (F11 > entrada UEFI del pendrive > macOS).
+4. Abre el pendrive OCSONOMA en macOS.
+5. Doble clic en DIAGNOSTICO-SONOMA.command.
+   - Si macOS no lo abre: clic derecho > Abrir > Abrir.
+   - O en Terminal:
+       bash /Volumes/OCSONOMA/DIAGNOSTICO-SONOMA.command
+6. Escribe tu contrasena y espera 2-5 minutos (el HDD es lento).
+7. Reinicia en Windows y avisa al asistente.
+   El informe queda en el pendrive como DIAGNOSTICO-SONOMA-1.txt.
+
+Opcional:
+- APLICAR-AJUSTES-SONOMA.command aplica dos ajustes seguros:
+  actualizaciones automaticas OFF y suspension del HDD OFF.
+  No toca EFI, OCLP, FileVault ni discos. Pide confirmacion.
+- GUIA-MANTENIMIENTO-SONOMA.txt: guia completa de ajustes,
+  actualizaciones, rendimiento, backups y mantenimiento.
+
+================================================================

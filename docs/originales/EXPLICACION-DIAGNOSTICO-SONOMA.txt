@@ -1,0 +1,104 @@
+==========================================================
+ EXPLICACION - DIAGNOSTICO Y MANTENIMIENTO DE macOS SONOMA
+==========================================================
+Fecha: 19/10/2026
+Equipo: i7-3770 / 16 GB / RX 580 / MSI H61M-P21
+macOS: Sonoma en HDD ST500LT012 (465,76 GB)
+Windows: C: SSD Crucial BX500; S: SSD Kingston; D:/E: HDD HGST
+
+IMPORTANTE
+- La actualizacion a Sequoia quedo CANCELADA. Sonoma se queda como esta.
+- Este pendrive NO se debe borrar: contiene el EFI y la recuperacion.
+- El script de diagnostico NO cambia nada: solo lee datos y guarda un informe.
+- El script de ajustes (opcional) solo desactiva actualizaciones automaticas
+  y la suspension del HDD. Se puede revertir desde Ajustes del Sistema.
+
+QUE HAY EN EL PENDRIVE
+- DIAGNOSTICO-SONOMA.command
+     Lee el estado del sistema y guarda un informe en el pendrive.
+- APLICAR-AJUSTES-SONOMA.command (opcional)
+     Aplica dos ajustes seguros: actualizaciones automaticas OFF y
+     suspension del disco duro OFF. Pide confirmacion.
+- GUIA-MANTENIMIENTO-SONOMA.txt
+     Guia completa: espacio, actualizaciones, ajustes, rendimiento,
+     backups, mantenimiento y cosas que no hacer.
+- LEEME-PASOS-RAPIDOS.txt
+     Resumen corto de los pasos.
+- EXPLICACION-DIAGNOSTICO-SONOMA.txt
+     Este archivo.
+
+COMO EJECUTAR EL DIAGNOSTICO EN macOS
+1. Arranca macOS (F11 > entrada UEFI del pendrive > macOS).
+2. Abre el pendrive OCSONOMA.
+3. Doble clic en DIAGNOSTICO-SONOMA.command.
+   - Si macOS no lo abre: clic derecho > Abrir > Abrir.
+   - Si aun asi no se abre, abre Terminal y pega esto:
+       bash /Volumes/OCSONOMA/DIAGNOSTICO-SONOMA.command
+4. Escribe tu contrasena (solo para leer datos del sistema).
+5. Espera 2-5 minutos. El HDD es lento; no cierres la ventana.
+6. Al terminar, el informe queda en el pendrive como:
+       DIAGNOSTICO-SONOMA-1.txt
+   (si ya existe uno, se llamara -2, -3, etc.)
+7. Reinicia en Windows y avisa al asistente.
+
+QUE MIDE EL INFORME
+- Espacio: df, diskutil apfs list, volumenes, snapshots.
+- Tamanos: Sistema, Datos, Aplicaciones, Usuarios, caches y swap.
+- Hardware: CPU, RAM, GPU, discos y estado SMART.
+- Energia: pmset, sueno del sistema, swap.
+- Arranque: SIP, NVRAM, boot-args y kexts.
+- Actualizaciones automaticas e historial.
+- Spotlight, elementos de inicio, red y OCLP.
+
+SCRIPT OPCIONAL DE AJUSTES
+- APLICAR-AJUSTES-SONOMA.command aplica:
+   1) Actualizaciones automaticas de macOS: OFF.
+   2) Suspension del disco duro: OFF.
+- Pide confirmacion antes de tocar nada.
+- No toca el EFI, ni OCLP, ni FileVault, ni los discos.
+- Deja un registro en el pendrive con los valores antes y despues.
+
+COMPROBACION RAPIDA DEL ESPACIO (sin scripts)
+- Menu Apple > Acerca de este Mac > Mas informacion > Almacenamiento.
+- O Ajustes del Sistema > General > Almacenamiento.
+- O Terminal:
+    df -h /
+    df -h /System/Volumes/Data
+    diskutil apfs list
+
+RESUMEN DEL EQUIPO Y CONCLUSIONES
+- RAM: 16 GB (2x8 GB) es el maximo de la placa H61M-P21. No ampliar.
+- CPU i7-3770 y GPU RX 580: suficientes para 1360x768.
+- HDD ST500LT012 de 5400 RPM: es el principal cuello de botella.
+  Windows esta en SSD, por eso Windows se siente mucho mas rapido.
+- Mejora real recomendada (opcional): SSD SATA 2,5" (480 GB o 1 TB)
+  para sustituir el HDD. No toca Windows. La placa es SATA II, pero
+  el acceso aleatorio del SSD mejora muchisimo la sensacion general.
+- macOS: no instalar actualizaciones sin consultar. Desactivar todas
+  las actualizaciones automaticas.
+- Sonoma esta al final de su ciclo; no conviene depender de mas
+  parches de Apple. La actualizacion a Sequoia queda cancelada.
+- OCLP: no pulsar "Build and Install OpenCore". No actualizar kexts
+  ni OpenCore si todo funciona. "Si no esta roto, no lo arregles".
+- FileVault: no activar. No usar CleanMyMac/MacKeeper ni limpiadores.
+- Mantener al menos un 15-20% de espacio libre en el disco.
+- No defragmentar APFS: no hace falta.
+- Backups: guardar este pendrive, copia del EFI y archivos importantes
+  en un disco externo o en la nube.
+
+SEGURIDAD Y PRIVACIDAD
+- El diagnostico solo lee datos. No instala, no modifica y no envia
+  nada a Internet. El informe se queda en el pendrive.
+- No desenchufes el pendrive mientras el script esta escribiendo.
+- No borres la carpeta EFI ni com.apple.recovery.boot.
+
+SI ALGO FALLA
+- Si el script no arranca con doble clic: usa el comando bash de arriba.
+- Si no encuentra el pendrive: guarda el informe en el Escritorio y
+  copialo luego al pendrive.
+- Si macOS no arranca: F11 > UEFI OCSONOMA > macOS Base System;
+  Utilidad de Discos > First Aid. No borres nada ni formatees.
+
+==========================================================
+ Preparado por el asistente - 19/10/2026
+==========================================================
