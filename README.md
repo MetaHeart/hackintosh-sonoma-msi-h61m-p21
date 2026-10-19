@@ -7,6 +7,10 @@ Guía completa, configuraciones y resultados de un **Hackintosh funcional con ma
 
 Este repositorio recopila **pasos, instrucciones, configuraciones, referencias, modificaciones y especificaciones** para que cualquiera pueda estudiar o replicar este montaje. Los binarios de terceros (OpenCore, kexts, OCLP, imagen de recuperación de macOS) **no** se redistribuyen aquí: se enlazan sus fuentes oficiales en [`docs/09-REFERENCIAS.md`](docs/09-REFERENCIAS.md).
 
+La pestaña **[Releases](https://github.com/MetaHeart/hackintosh-sonoma-msi-h61m-p21/releases)** incluye un ZIP con los `config.plist` saneados y el `SSDT-EC-USBX.aml` (solo material propio, sin binarios).
+
+> **Versión en inglés:** [`README.en.md`](README.en.md) · Documentación completa en [`docs/en/`](docs/en/).
+
 ---
 
 ## Índice
@@ -24,6 +28,8 @@ Este repositorio recopila **pasos, instrucciones, configuraciones, referencias, 
 | [`docs/08-SOLUCION-DE-PROBLEMAS.md`](docs/08-SOLUCION-DE-PROBLEMAS.md) | Problemas comunes y cómo resolverlos. |
 | [`docs/09-REFERENCIAS.md`](docs/09-REFERENCIAS.md) | Enlaces oficiales, herramientas y versiones usadas. |
 | [`docs/10-LICENCIAS-Y-CREDITOS.md`](docs/10-LICENCIAS-Y-CREDITOS.md) | Licencias, descargo de responsabilidad y créditos. |
+| [`docs/11-PREGUNTAS-FRECUENTES.md`](docs/11-PREGUNTAS-FRECUENTES.md) | Preguntas frecuentes (FAQ). |
+| [`docs/en/`](docs/en/) | Documentación completa en inglés (incluye FAQ). |
 | [`docs/originales/`](docs/originales/) | Guías originales en texto plano tal como se usaron. |
 | [`docs/ejemplos/`](docs/ejemplos/) | Ejemplos de informes y registros (datos personales eliminados). |
 | [`efi/configs/`](efi/configs/) | Configuraciones `config.plist` saneadas (sin números de serie). |
@@ -106,7 +112,8 @@ Detalles y desglose completo en [`docs/05-DIAGNOSTICO-Y-RESULTADOS.md`](docs/05-
 
 ```text
 .
-├── README.md                     Este documento
+├── README.md                     Este documento (español)
+├── README.en.md                  Versión completa en inglés
 ├── LICENSE                       Licencia MIT (solo para el contenido de este repo)
 ├── docs/
 │   ├── 00-RESUMEN.md             Resumen y decisiones del proyecto
@@ -120,6 +127,8 @@ Detalles y desglose completo en [`docs/05-DIAGNOSTICO-Y-RESULTADOS.md`](docs/05-
 │   ├── 08-SOLUCION-DE-PROBLEMAS.md
 │   ├── 09-REFERENCIAS.md
 │   ├── 10-LICENCIAS-Y-CREDITOS.md
+│   ├── 11-PREGUNTAS-FRECUENTES.md  FAQ
+│   ├── en/                       Traducción completa al inglés (docs/en/README.md)
 │   ├── originales/               Guías originales en texto plano
 │   └── ejemplos/                 Informes saneados de ejemplo
 ├── efi/
