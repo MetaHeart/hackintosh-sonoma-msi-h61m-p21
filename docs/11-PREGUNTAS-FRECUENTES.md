@@ -71,6 +71,24 @@ La RX 580 tiene aceleración Metal 2, así que muchos juegos de macOS funcionan 
 
 Sí. Están en discos distintos y se eligen desde el menú de arranque (F11 o el propio menú de OpenCore). **No toques la partición EFI de Windows**: este montaje usa la EFI del disco de macOS.
 
+### ¿Por qué la hora cambia al pasar de macOS a Windows?
+
+Porque macOS guarda el reloj de la BIOS en UTC y Windows lo interpreta como hora local. La solución es hacer que Windows también use UTC: ejecuta [`scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd`](../scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd) como administrador y reinicia. Está explicado en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#hora-desajustada-al-alternar-macos-y-windows).
+
+### ¿Por qué EarTrumpet da un error de licencia CLiP?
+
+La licencia de Microsoft Store quedó invalidada. Lo más rápido es reinstalarlo desde el catálogo comunitario de winget, que no usa licencia de Store:
+
+```cmd
+winget install --id File-New-Project.EarTrumpet --source winget
+```
+
+Más detalles en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#eartrumpet-error-de-licencia-clip).
+
+### ¿Por qué el icono de Riot Vanguard está gris?
+
+Porque el servicio `vgc` no arranca (a menudo con el error "Función incorrecta"). Puedes intentar repararlo o reinstalarlo; si no juegas a Valorant, desinstálalo. Pasos en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#riot-vanguard-icono-gris-o-servicio-vgc-detenido).
+
 ### ¿Puedo activar FileVault?
 
 No es recomendable: complica el arranque, el root patch de OCLP y la recuperación. Si necesitas cifrado, valóralo con cuidado y con copias de seguridad.

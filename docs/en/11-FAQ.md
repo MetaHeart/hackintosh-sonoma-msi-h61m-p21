@@ -71,6 +71,24 @@ The RX 580 has Metal 2 acceleration, so many macOS games run with moderate perfo
 
 Yes. They are on different disks and are selected from the boot menu (F11 or OpenCore's own menu). **Do not touch the Windows EFI partition**: this build uses the macOS disk's EFI.
 
+### Why does the clock change when switching from macOS to Windows?
+
+Because macOS stores the BIOS clock in UTC and Windows interprets it as local time. The fix is to make Windows use UTC as well: run [`scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd`](../../scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd) as administrator and restart. It is explained in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#clock-offset-when-switching-between-macos-and-windows).
+
+### Why does EarTrumpet show a CLiP license error?
+
+The Microsoft Store license was invalidated. The quickest fix is to reinstall it from the winget community catalog, which does not use a Store license:
+
+```cmd
+winget install --id File-New-Project.EarTrumpet --source winget
+```
+
+More details in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#eartrumpet-clip-license-error).
+
+### Why is the Riot Vanguard icon gray?
+
+Because the `vgc` service does not start (often with the "Incorrect function" error). You can try to repair or reinstall it; if you do not play Valorant, uninstall it. Steps in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#riot-vanguard-gray-icon-or-vgc-service-stopped).
+
 ### Can I enable FileVault?
 
 It is not recommended: it complicates booting, OCLP root patching and recovery. If you need encryption, plan carefully and keep backups.

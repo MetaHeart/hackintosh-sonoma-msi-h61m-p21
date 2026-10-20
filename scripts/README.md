@@ -38,12 +38,18 @@ Los scripts que piden contraseña usan `sudo`; al escribirla no se ve nada en pa
 | `PREPARAR-USB-SONOMA.cmd` + `preparar_usb_sonoma.py` | Formatea un USB como FAT32 con etiqueta `OCSONOMA` y copia los archivos de trabajo. | **Alto:** formatea un disco. Revisa el disco elegido. |
 | `INSTALAR-ARRANQUE-INTERNO.cmd` + `instalar_arranque_interno.ps1` | Copia la carpeta `EFI` del pendrive `OCSONOMA` a la partición EFI (200 MB) del disco interno con macOS. | **Alto:** escribe en la partición de arranque. Requiere administrador. |
 | `RESTAURAR-CONFIG-ANTERIOR.cmd` | Ejecutado desde la raíz del pendrive: restaura `EXTRAS/config-fase2-antes-bt.plist` como `EFI/OC/config.plist`. | Medio: para emergencias. |
+| `ARREGLAR-RELOJ-DUALBOOT.cmd` | Hace que Windows trate la BIOS como UTC (`RealTimeIsUniversal=1`), desactiva el Inicio rápido y resincroniza la hora. Corrige el desfase horario del doble arranque. | Bajo: cambia dos valores del registro y el servicio de hora. Requiere administrador. |
+| `REPARAR-EARTRUMPET.cmd` | Desinstala EarTrumpet y lo reinstala desde Microsoft Store; si falla, usa el origen comunitario de winget (paquete de GitHub, sin licencia de Store). | Bajo: desinstala y reinstala una aplicación del usuario. |
+| `REPARAR-VANGUARD.cmd` | Diagnostica los servicios `vgc`/`vgk` y ofrece un menú para reparar, reinstalar (junto con Valorant) o desinstalar Vanguard. | Medio: puede desinstalar Vanguard. Requiere administrador. |
 
 ### Notas
 
 - `preparar_usb_sonoma.py`: la variable `SRC` trae una **ruta de ejemplo**; edítala antes de ejecutar. El script tiene un límite de seguridad (no formatea discos de más de 64 GB) y exige permisos de administrador (el `.cmd` los solicita).
 - `instalar_arranque_interno.ps1`: busca el disco con partición APFS, comprueba que no sea USB y que la partición EFI tenga un tamaño razonable, y pide confirmación antes de copiar. Aun así, **verifica siempre el disco que se muestra en pantalla**.
 - `RESTAURAR-CONFIG-ANTERIOR.cmd` debe ejecutarse **desde la raíz del pendrive** (doble clic desde el propio pendrive, no desde el escritorio).
+- `ARREGLAR-RELOJ-DUALBOOT.cmd` no toca macOS ni el EFI: solo configura Windows para que use UTC. Es seguro ejecutarlo más de una vez.
+- `REPARAR-EARTRUMPET.cmd` no necesita administrador; si la Store falla, el propio script prueba el origen comunitario de `winget`.
+- `REPARAR-VANGUARD.cmd` requiere administrador. Si no tienes Valorant instalado, Vanguard no tiene utilidad: usa la opción de desinstalarlo.
 
 ## Generación de configuraciones (`scripts/build/`)
 

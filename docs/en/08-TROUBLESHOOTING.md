@@ -90,6 +90,114 @@
 | Windows does not boot | Boot order changed | `F11` → choose Windows Boot Manager; adjust the order in BIOS. |
 | I do not want to touch the Windows EFI | — | This build uses the EFI of the macOS disk; do not touch the Windows one. |
 | Windows asks for repair | Order or disk change | Boot Windows from its own UEFI entry; do not reinstall anything without a backup. |
+| The time changes when switching from macOS to Windows | macOS and Windows interpret the BIOS clock differently | Run [`ARREGLAR-RELOJ-DUALBOOT.cmd`](../../scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd) as administrator and restart. |
+| EarTrumpet shows a CLiP license error or `0xc0ea000a` | Invalidated Microsoft Store license | Reinstall it from the winget community source; see [EarTrumpet](#eartrumpet-clip-license-error). |
+| The Riot Vanguard icon is gray | The `vgc` service does not start ("Incorrect function") | Repair or reinstall Vanguard; see [Riot Vanguard](#riot-vanguard-gray-icon-or-vgc-service-stopped). |
+
+### Clock offset when switching between macOS and Windows
+
+**Symptom:** after using macOS, Windows starts with the clock offset (by your time zone difference: for example, 5 hours in Colombia) and fixes itself after a while or after syncing.
+
+**Cause:** macOS stores the BIOS/CMOS clock in **UTC**. Windows, by default, interprets it as **local time**. Each system writes and reads the time differently, so the clock "jumps" when you switch systems.
+
+**Solution (Windows only):**
+
+1. Run [`scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd`](../../scripts/windows/ARREGLAR-RELOJ-DUALBOOT.cmd) as administrator (double-click; the script requests UAC).
+2. Restart Windows.
+
+The script:
+
+- Creates `RealTimeIsUniversal = 1` (DWORD) under `HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`, so Windows also treats the BIOS clock as UTC.
+- Disables **Fast Startup** (`HiberbootEnabled = 0`), recommended for dual boot.
+- Sets the `w32time` service to automatic and resynchronizes the clock.
+
+**Manual check:**
+
+```cmd
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal
+tzutil /g
+w32tm /resync
+```
+
+**macOS needs no changes:** it always uses UTC. If the clock still drifts by a few minutes, check that the time zone is correct and run the script again. This fix is Windows-only and does not touch OpenCore, the EFI or macOS.
+
+## Secondary Windows problems
+
+These failures do not affect booting or macOS: they are Windows applications that can be left in a bad state after switching systems, changing the clock or updating. They can be fixed without reinstalling Windows.
+
+### EarTrumpet: CLiP license error
+
+**Symptom:** EarTrumpet does not start and shows:
+
+> "The device ID of the CLiP license does not match the device ID of the bound device license."
+
+When reinstalling it from the Store, winget may fail with `0xc0ea000a`.
+
+**Cause:** the Microsoft Store license is bound to the device and the account. A clock offset, a change in the Store state or a reinstall can invalidate it. `ClipSVC` (Client License Service) is the service that manages those licenses; there is no need to disable it or "repair" it by hand.
+
+**Recommended solution — install without going through the Store:**
+
+```cmd
+winget install --id File-New-Project.EarTrumpet --source winget --accept-package-agreements --accept-source-agreements
+```
+
+The `winget` source downloads the package from the GitHub *releases* and installs it as a local MSIX application: **it does not use a Store license**, so the CLiP error cannot appear. To update it later:
+
+```cmd
+winget upgrade --id File-New-Project.EarTrumpet
+```
+
+**Alternative with Microsoft Store:**
+
+1. Check that the time and time zone are correct.
+2. Run `WSReset.exe` (Win+R) and restart Windows.
+3. Open Microsoft Store, sign in and go to **Library → Get updates**.
+4. Install or update EarTrumpet from its page.
+5. If it still fails, run `DISM /Online /Cleanup-Image /RestoreHealth` and `sfc /scannow` as administrator, restart and try again.
+
+You can also use [`scripts/windows/REPARAR-EARTRUMPET.cmd`](../../scripts/windows/REPARAR-EARTRUMPET.cmd), which uninstalls the current version and tries the Store first and then the `winget` source.
+
+> The version installed by `winget` does not update automatically from the Store; use the `winget upgrade` command above.
+
+### Riot Vanguard: gray icon or `vgc` service stopped
+
+**Symptom:** the Vanguard icon in the system tray is gray and `sc query vgc` shows the service stopped, even though it is set to Automatic.
+
+**Cause:** the `vgc` service does not start. The Windows event log usually shows event **7023**: "The vgc service terminated with the following error: Incorrect function" (error 1). It normally indicates a corrupted installation or a `vgk` driver that fails to load.
+
+**Check:**
+
+```cmd
+sc query vgc
+sc query vgk
+```
+
+And, in PowerShell:
+
+```powershell
+Get-WinEvent -LogName System -MaxEvents 500 |
+  Where-Object { $_.Message -match 'vgc|vgk' } |
+  Select-Object -First 5 TimeCreated, Id, Message
+```
+
+**Solution:**
+
+1. **Try to repair it** (as administrator):
+
+   ```cmd
+   sc config vgc start= auto
+   net start vgc
+   ```
+
+   If it starts, the icon should turn red again.
+
+2. **If it fails with "Incorrect function"**, the installation is damaged. Uninstall Vanguard with `C:\Program Files\Riot Vanguard\uninstall.exe`, restart Windows and open **Riot Client → Valorant → Install**. Vanguard will be installed again along with the game; restart when prompted.
+
+3. **If you do not play Valorant**, uninstall Vanguard: it is the only Riot game that uses it (League of Legends and TFT do not need it). Without Valorant, the gray icon serves no purpose.
+
+You can also use [`scripts/windows/REPARAR-VANGUARD.cmd`](../../scripts/windows/REPARAR-VANGUARD.cmd), which shows the service status and offers a menu to repair, reinstall or uninstall.
+
+> **Note:** Vanguard is installed together with Valorant; there is no standalone installer. If Valorant is not installed, the clean way to stop seeing the gray icon is to uninstall it.
 
 ## Disk and space
 
