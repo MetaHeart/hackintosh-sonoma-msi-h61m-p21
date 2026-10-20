@@ -40,7 +40,7 @@ Los scripts que piden contraseña usan `sudo`; al escribirla no se ve nada en pa
 | `RESTAURAR-CONFIG-ANTERIOR.cmd` | Ejecutado desde la raíz del pendrive: restaura `EXTRAS/config-fase2-antes-bt.plist` como `EFI/OC/config.plist`. | Medio: para emergencias. |
 | `ARREGLAR-RELOJ-DUALBOOT.cmd` | Hace que Windows trate la BIOS como UTC (`RealTimeIsUniversal=1`), desactiva el Inicio rápido y resincroniza la hora. Corrige el desfase horario del doble arranque. | Bajo: cambia dos valores del registro y el servicio de hora. Requiere administrador. |
 | `REPARAR-EARTRUMPET.cmd` | Desinstala EarTrumpet y lo reinstala desde Microsoft Store; si falla, usa el origen comunitario de winget (paquete de GitHub, sin licencia de Store). | Bajo: desinstala y reinstala una aplicación del usuario. |
-| `REPARAR-VANGUARD.cmd` | Diagnostica los servicios `vgc`/`vgk` y ofrece un menú para reparar, reinstalar (junto con Valorant) o desinstalar Vanguard. | Medio: puede desinstalar Vanguard. Requiere administrador. |
+| `REPARAR-VANGUARD.cmd` | Diagnostica los servicios `vgc`/`vgk` y ofrece un menú para reparar, reinstalar (lo descarga Riot Client o el juego) o desinstalar Vanguard. | Medio: puede desinstalar Vanguard. Requiere administrador. |
 
 ### Notas
 
@@ -49,7 +49,7 @@ Los scripts que piden contraseña usan `sudo`; al escribirla no se ve nada en pa
 - `RESTAURAR-CONFIG-ANTERIOR.cmd` debe ejecutarse **desde la raíz del pendrive** (doble clic desde el propio pendrive, no desde el escritorio).
 - `ARREGLAR-RELOJ-DUALBOOT.cmd` no toca macOS ni el EFI: solo configura Windows para que use UTC. Es seguro ejecutarlo más de una vez.
 - `REPARAR-EARTRUMPET.cmd` no necesita administrador; si la Store falla, el propio script prueba el origen comunitario de `winget`.
-- `REPARAR-VANGUARD.cmd` requiere administrador. Si no tienes Valorant instalado, Vanguard no tiene utilidad: usa la opción de desinstalarlo.
+- `REPARAR-VANGUARD.cmd` requiere administrador. Si no juegas a VALORANT ni a League of Legends, Vanguard no tiene utilidad: usa la opción de desinstalarlo. Ambos juegos lo necesitan para entrar en partida.
 
 ## Generación de configuraciones (`scripts/build/`)
 

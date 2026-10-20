@@ -161,7 +161,7 @@ También puedes usar [`scripts/windows/REPARAR-EARTRUMPET.cmd`](../scripts/windo
 
 ### Riot Vanguard: icono gris o servicio `vgc` detenido
 
-**Síntoma:** el icono de Vanguard en la bandeja del sistema está gris y `sc query vgc` muestra el servicio detenido, aunque esté configurado en Automático.
+**Síntoma:** el icono de Vanguard en la bandeja del sistema está gris y `sc query vgc` muestra el servicio detenido, aunque esté configurado en Automático. League of Legends o VALORANT pueden pedir Vanguard al entrar en partida y no dejarte continuar.
 
 **Causa:** el servicio `vgc` no arranca. En el registro de eventos de Windows suele aparecer el evento **7023**: "El servicio vgc se cerró con el siguiente error: Función incorrecta" (error 1). Normalmente indica una instalación corrupta o un driver `vgk` que no se carga.
 
@@ -191,13 +191,13 @@ Get-WinEvent -LogName System -MaxEvents 500 |
 
    Si arranca, el icono debería volver a rojo.
 
-2. **Si falla con "Función incorrecta"**, la instalación está dañada. Desinstala Vanguard con `C:\Program Files\Riot Vanguard\uninstall.exe`, reinicia Windows y abre **Riot Client → Valorant → Instalar**. Vanguard se instalará de nuevo junto con el juego; reinicia cuando lo pida.
+2. **Si falla con "Función incorrecta"**, la instalación está dañada. Desinstala Vanguard con `C:\Program Files\Riot Vanguard\uninstall.exe`, reinicia Windows y abre **Riot Client** o el juego (**League of Legends** o **VALORANT**). Riot descargará e instalará Vanguard automáticamente; reinicia cuando lo pida.
 
-3. **Si no juegas a Valorant**, desinstala Vanguard: es el único juego de Riot que lo usa (League of Legends y TFT no lo necesitan). Sin Valorant, el icono gris no aporta nada.
+3. **Si no juegas a ningún juego que use Vanguard**, desinstálalo. Vanguard es obligatorio para **VALORANT** y **League of Legends** (Riot lo exige al entrar en partida); **TFT no lo usa**. Si juegas a alguno de los dos, no lo desinstales: repáralo o reinstálalo.
 
 También puedes usar [`scripts/windows/REPARAR-VANGUARD.cmd`](../scripts/windows/REPARAR-VANGUARD.cmd), que muestra el estado de los servicios y ofrece un menú para reparar, reinstalar o desinstalar.
 
-> **Nota:** Vanguard se instala junto con Valorant; no hay un instalador independiente. Si no tienes Valorant instalado, la forma limpia de dejar de ver el icono gris es desinstalarlo.
+> **Nota:** Vanguard se instala junto con VALORANT o League of Legends; no hay un instalador independiente. Al abrir Riot Client o el juego, se descarga e instala automáticamente.
 
 ## Disco y espacio
 

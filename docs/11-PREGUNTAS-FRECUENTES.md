@@ -87,7 +87,7 @@ Más detalles en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#ear
 
 ### ¿Por qué el icono de Riot Vanguard está gris?
 
-Porque el servicio `vgc` no arranca (a menudo con el error "Función incorrecta"). Puedes intentar repararlo o reinstalarlo; si no juegas a Valorant, desinstálalo. Pasos en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#riot-vanguard-icono-gris-o-servicio-vgc-detenido).
+Porque el servicio `vgc` no arranca (a menudo con el error "Función incorrecta"). Puedes intentar repararlo o reinstalarlo; si no juegas a **VALORANT** ni a **League of Legends**, desinstálalo (ambos lo requieren al entrar en partida; TFT no lo usa). Pasos en [`08-SOLUCION-DE-PROBLEMAS.md`](08-SOLUCION-DE-PROBLEMAS.md#riot-vanguard-icono-gris-o-servicio-vgc-detenido).
 
 ### ¿Puedo activar FileVault?
 

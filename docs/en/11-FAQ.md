@@ -87,7 +87,7 @@ More details in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#eartrumpet-clip-
 
 ### Why is the Riot Vanguard icon gray?
 
-Because the `vgc` service does not start (often with the "Incorrect function" error). You can try to repair or reinstall it; if you do not play Valorant, uninstall it. Steps in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#riot-vanguard-gray-icon-or-vgc-service-stopped).
+Because the `vgc` service does not start (often with the "Incorrect function" error). You can try to repair or reinstall it; if you do not play **VALORANT** or **League of Legends**, uninstall it (both require it when entering a match; TFT does not use it). Steps in [`08-TROUBLESHOOTING.md`](08-TROUBLESHOOTING.md#riot-vanguard-gray-icon-or-vgc-service-stopped).
 
 ### Can I enable FileVault?
 

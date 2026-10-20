@@ -161,7 +161,7 @@ You can also use [`scripts/windows/REPARAR-EARTRUMPET.cmd`](../../scripts/window
 
 ### Riot Vanguard: gray icon or `vgc` service stopped
 
-**Symptom:** the Vanguard icon in the system tray is gray and `sc query vgc` shows the service stopped, even though it is set to Automatic.
+**Symptom:** the Vanguard icon in the system tray is gray and `sc query vgc` shows the service stopped, even though it is set to Automatic. League of Legends or VALORANT may ask for Vanguard when entering a match and refuse to continue.
 
 **Cause:** the `vgc` service does not start. The Windows event log usually shows event **7023**: "The vgc service terminated with the following error: Incorrect function" (error 1). It normally indicates a corrupted installation or a `vgk` driver that fails to load.
 
@@ -191,13 +191,13 @@ Get-WinEvent -LogName System -MaxEvents 500 |
 
    If it starts, the icon should turn red again.
 
-2. **If it fails with "Incorrect function"**, the installation is damaged. Uninstall Vanguard with `C:\Program Files\Riot Vanguard\uninstall.exe`, restart Windows and open **Riot Client → Valorant → Install**. Vanguard will be installed again along with the game; restart when prompted.
+2. **If it fails with "Incorrect function"**, the installation is damaged. Uninstall Vanguard with `C:\Program Files\Riot Vanguard\uninstall.exe`, restart Windows and open **Riot Client** or the game (**League of Legends** or **VALORANT**). Riot will download and install Vanguard automatically; restart when prompted.
 
-3. **If you do not play Valorant**, uninstall Vanguard: it is the only Riot game that uses it (League of Legends and TFT do not need it). Without Valorant, the gray icon serves no purpose.
+3. **If you do not play any game that uses Vanguard**, uninstall it. Vanguard is required for **VALORANT** and **League of Legends** (Riot requires it when entering a match); **TFT does not use it**. If you play either of them, do not uninstall it: repair or reinstall it.
 
 You can also use [`scripts/windows/REPARAR-VANGUARD.cmd`](../../scripts/windows/REPARAR-VANGUARD.cmd), which shows the service status and offers a menu to repair, reinstall or uninstall.
 
-> **Note:** Vanguard is installed together with Valorant; there is no standalone installer. If Valorant is not installed, the clean way to stop seeing the gray icon is to uninstall it.
+> **Note:** Vanguard is installed together with VALORANT or League of Legends; there is no standalone installer. When you open Riot Client or the game, it is downloaded and installed automatically.
 
 ## Disk and space
 

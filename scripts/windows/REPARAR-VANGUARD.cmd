@@ -13,25 +13,32 @@ echo ================================================================
 echo  RIOT VANGUARD: DIAGNOSTICO Y REPARACION
 echo ================================================================
 echo.
+echo  Vanguard es obligatorio para VALORANT y para League of
+echo  Legends (Riot lo exige al entrar en partida). TFT no lo usa.
+echo.
 echo  Estado de los servicios:
 echo.
 sc query vgc
 echo.
 sc query vgk
 echo.
-if exist "C:\Riot Games\VALORANT\live\VALORANT.exe" (
-    echo  Valorant: instalado.
+set "VALORANT=C:\Riot Games\VALORANT\live\VALORANT.exe"
+set "LEAGUE=C:\Riot Games\League of Legends\LeagueClient.exe"
+set "GAME="
+if exist "%VALORANT%" set "GAME=VALORANT"
+if exist "%LEAGUE%" if defined GAME (set "GAME=%GAME% y League of Legends") else set "GAME=League of Legends"
+if defined GAME (
+    echo  Juego^(s^) detectado^(s^): %GAME%.
 ) else (
-    echo  Valorant: no encontrado en C:\Riot Games.
-    echo  Vanguard solo lo usa Valorant; si no lo juegas, lo mejor
-    echo  es desinstalarlo.
+    echo  No se encontro VALORANT ni League of Legends en C:\Riot Games.
 )
 echo.
 echo  Opciones:
 echo    [1] Reparar: poner el servicio vgc en Automatico e iniciarlo.
-echo    [2] Reinstalar: desinstalar Vanguard y reinstalarlo junto
-echo        con Valorant desde Riot Client.
-echo    [3] Desinstalar Vanguard (si ya no juegas a Valorant).
+echo    [2] Reinstalar: desinstalar Vanguard y dejar que Riot Client
+echo        o el juego lo instalen de nuevo al abrirlos.
+echo    [3] Desinstalar Vanguard (solo si no juegas a ningun juego
+echo        que lo requiera).
 echo    [0] Salir sin hacer nada.
 echo.
 choice /c 1230 /n /m "Elige una opcion [1/2/3/0]: "
@@ -62,9 +69,9 @@ if exist "C:\Program Files\Riot Vanguard\uninstall.exe" (
     start "" "C:\Program Files\Riot Vanguard\uninstall.exe"
     echo.
     echo  1. Termina el desinstalador y REINICIA Windows.
-    echo  2. Abre Riot Client y elige VALORANT ^> Instalar.
-    echo  3. Cuando lo pida, reinicia otra vez. Vanguard se
-    echo     instalara nuevo junto con el juego.
+    echo  2. Abre Riot Client o el juego (League of Legends o
+    echo     VALORANT). Vanguard se descargara e instalara solo.
+    echo  3. Reinicia otra vez si el juego lo pide.
 ) else (
     echo  No se encontro C:\Program Files\Riot Vanguard\uninstall.exe.
     echo  Puede que Vanguard ya no este instalado.
@@ -72,6 +79,9 @@ if exist "C:\Program Files\Riot Vanguard\uninstall.exe" (
 goto :fin
 
 :desinstalar
+echo.
+echo  AVISO: si juegas a League of Legends o VALORANT, no uses esta
+echo  opcion: los dos necesitan Vanguard para entrar en partida.
 echo.
 echo  Abriendo el desinstalador de Vanguard...
 if exist "C:\Program Files\Riot Vanguard\uninstall.exe" (
